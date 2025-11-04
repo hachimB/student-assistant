@@ -1,0 +1,53 @@
+[project]
+name = "student-assistant"
+version = "0.1.0"
+description = "Assistant RAG pour étudiants"
+requires-python = ">=3.11"
+dependencies = [
+    # Core
+    "python-dotenv>=1.0.0",
+    
+    # LangChain
+    "langchain>=0.1.0",
+    "langchain-openai>=0.0.5",
+    "langchain-community>=0.0.10",
+    
+    # OpenAI
+    "openai>=1.10.0",
+    
+    # FastAPI
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "python-multipart>=0.0.6",
+    
+    # Database
+    "sqlalchemy>=2.0.25",
+    "psycopg2-binary>=2.9.9",
+    
+    # Vector Database
+    "chromadb>=0.4.22",
+    
+    # Document Processing
+    "pypdf>=4.0.0",
+    "python-docx>=1.1.0",
+    "openpyxl>=3.1.2",
+    
+    # Frontend
+    "streamlit>=1.31.0",
+    
+    # Data validation
+    "pydantic>=2.6.0",
+    "pydantic-settings>=2.1.0",
+    
+    # Utilities
+    "requests>=2.31.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+# Indique explicitement à Hatch quels fichiers empaqueter.
+# Ici on pointe sur le dossier contenant ton code Python.
+packages = ["backend/app"]

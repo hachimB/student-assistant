@@ -1,0 +1,33 @@
+✅ Un système RAG:
+    Recherche dans une base de connaissances → Fourniture des extraits pertinents au LLM → Génération de réponses plus fiables.
+    But: réduire les hallucinations, améliorer la pertinence, et assurer que les réponses du modèle s’appuient sur des informations vérifiées, 
+    souvent propres à l’organisation.
+
+
+✅ Chunk (ou “text chunk”)
+Un chunk est un segment de texte découpé à partir d’un document plus long afin de pouvoir être traité efficacement par un modèle de langage 
+ou stocké dans une base vectorielle. Chaque chunk contient une portion cohérente d’information, suffisamment courte pour respecter les 
+limites de contexte du LLM et optimiser l’indexation.
+
+
+✅ Overlap (ou “chunk overlap”)
+L’overlap est la zone de texte qui se répète entre deux chunks consécutifs.
+Il garantit que les informations situées à la frontière entre deux segments ne soient pas perdues, en offrant une continuité de contexte et en 
+évitant qu’une phrase importante soit coupée de manière incohérente.
+
+
+✅ Un vecteur:
+c’est une représentation numérique d’une information, sous forme d’une liste de nombres, utilisée pour mesurer la similarité entre 
+textes, images, sons, etc. ex: [0.10, -0.90, 0.47, 1.00, ...]
+
+
+✅ Indexation avec ChromaDB (définition courte)
+    L’indexation avec ChromaDB consiste à :
+    * Transformer un texte en vecteur (grâce à un modèle d’embedding),
+    * Stocker ce vecteur dans la base Chroma, Pour pouvoir ensuite retrouver rapidement les textes les plus similaires en faisant une 
+      recherche vectorielle.
+
+
+✅ Embedding
+Un embedding, c’est un vecteur généré par un modèle pour représenter le sens d’un contenu, afin de pouvoir comparer, chercher ou classifier 
+des informations.

@@ -1,0 +1,21 @@
+📊 Résumé extraction:
+   - PDF extraits: 8
+   - DOCX extraits: 32
+   - DOC extraits: 0
+   - Échecs: 22
+   - TOTAL RÉUSSI: 40
+
+💾 Sauvegardé dans: data/processed/extracted_documents.json
+
+📈 Statistiques finales:
+   - Documents: 40
+   - Caractères totaux: 131,569
+   - Moyenne par doc: 3,289
+
+   Par catégorie:
+      • emploi_temps: 35
+      • reglements: 3
+      • procedures: 1
+      • faqs: 1
+
+🎉 Extraction terminée avec succès !

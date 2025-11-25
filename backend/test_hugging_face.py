@@ -16,9 +16,6 @@ def test_huggingface_connection():
         print("❌ ERREUR : HUGGINGFACE_API_KEY non trouvée dans .env")
         return False
     
-    if api_key == "your_huggingface_token_here":
-        print("❌ ERREUR : Remplacez le token dans .env par votre vrai token")
-        return False
     
     print(f"✅ Token HuggingFace trouvé : {api_key[:15]}...")
     

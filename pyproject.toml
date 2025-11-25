@@ -39,6 +39,7 @@ dependencies = [
     "sentence-transformers",
     "transformers",
     "torch",
+    "tqdm>=4.67.1",
 ]
 
 [build-system]

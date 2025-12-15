@@ -1,0 +1,274 @@
+{
+  "id": "conv_bd41c41d9a77",
+  "created_at": "2025-12-09T11:10:55.562601",
+  "updated_at": "2025-12-09T11:20:10.347184",
+  "messages": [
+    {
+      "id": "msg_dbfe1dfb",
+      "role": "user",
+      "content": "Donne moi l'emploi du temps de cette annee s'il te plait",
+      "timestamp": "2025-12-09T11:12:52.105115",
+      "sources": []
+    },
+    {
+      "id": "msg_c5cb8bd0",
+      "role": "assistant",
+      "content": "Selon le document \"Réglement\\_interieur\\_2020-2021\\_ENSIAS.pdf\", les élèves-ingénieurs sont informés des emplois du temps et de leurs modifications éventuelles par affichage sur les panneaux réservés à chaque promotion des filières ENSIAS et par voie électronique. Je vous invite therefore à consulter régulièrement ces sources pour obtenir les informations les plus récentes sur l'emploi du temps de cette année.",
+      "timestamp": "2025-12-09T11:12:57.702969",
+      "sources": [
+        {
+          "source": "faq.pdf",
+          "category": "faqs",
+          "score": 0.13336255183878812,
+          "excerpt": null
+        },
+        {
+          "source": "Réglement_interieur_2020-2021_ENSIAS.pdf",
+          "category": "reglements",
+          "score": 0.13329385866841142,
+          "excerpt": null
+        },
+        {
+          "source": "Règlement Interieur des Formations continues_UM5_2019.pdf",
+          "category": "reglements",
+          "score": 0.13283401834699443,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_4c224d04",
+      "role": "user",
+      "content": "Quelles sont les modules de 1ere annee master de cette annee?",
+      "timestamp": "2025-12-09T11:13:49.915926",
+      "sources": []
+    },
+    {
+      "id": "msg_2c089f4d",
+      "role": "assistant",
+      "content": "Selon le document \"Charte\\_UM5R Version 19 Juillet 2022.pdf\", les étudiants en master sont informés de présenter devant une commission l’état de l’art, l’analyse de la bibliographie et les voies de prospection dans leur première année. Il n'y a pas d'information détaillée sur les modules spécifiques dans ce document. Je vous invite à consulter le programme détaillé de votre formation master ou le département concerné pour plus d'informations.",
+      "timestamp": "2025-12-09T11:13:57.159311",
+      "sources": [
+        {
+          "source": "Charte_UM5R Version 19 Juillet 2022.pdf",
+          "category": "reglements",
+          "score": 0.09760223989515385,
+          "excerpt": null
+        },
+        {
+          "source": "Réglement_interieur_2020-2021_ENSIAS.pdf",
+          "category": "reglements",
+          "score": 0.08850879524583952,
+          "excerpt": null
+        },
+        {
+          "source": "Calendrier prévisionnel de l’Année Universitaire 2024– 2025 (Temps Normal)-UM5.pdf",
+          "category": "emploi_temps",
+          "score": 0.08115496231463026,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_a23a02fb",
+      "role": "user",
+      "content": "quelles sont les modules de 1ere annee master informatique?",
+      "timestamp": "2025-12-09T11:15:08.900015",
+      "sources": []
+    },
+    {
+      "id": "msg_b1f627d2",
+      "role": "assistant",
+      "content": "Selon le document \"Charte\\_UM5R Version 19 Juillet 2022.pdf\", les étudiants en master sont informés des modules transversaux obligatoires à valider durant leur première année, sans mention des modules spécifiques de l'informatique. Je suis préparé à vous fournir des informations supplémentaires si vous avez des questions sur les modules transversaux. Voulez-vous peut-être me demander quels sont les modules transversaux obligatoires durant la première année de l'étude du master en informatique à l'UM5S ?",
+      "timestamp": "2025-12-09T11:15:16.930298",
+      "sources": [
+        {
+          "source": "Charte_UM5R Version 19 Juillet 2022.pdf",
+          "category": "reglements",
+          "score": 0.12254295660756964,
+          "excerpt": null
+        },
+        {
+          "source": "Master S3 MIIEL TA 2024-2025.docx",
+          "category": "emploi_temps",
+          "score": 0.1142927649040152,
+          "excerpt": null
+        },
+        {
+          "source": "Master S3 MIIEL TN 2024-2025.docx",
+          "category": "emploi_temps",
+          "score": 0.10886211466019832,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_30d30216",
+      "role": "user",
+      "content": "comment obtenir l'attestation d'inscription?",
+      "timestamp": "2025-12-09T11:16:47.669289",
+      "sources": []
+    },
+    {
+      "id": "msg_7293ac2e",
+      "role": "assistant",
+      "content": "Selon le document \"Charte\\_UM5R Version 19 Juillet 2022.pdf\", pour obtenir l'attestation d'inscription, vous devez valider les modules transversaux obligatoires programmés et présenter un rapport détaillé sur l'état d'avancement de vos travaux de recherche, validé par votre directeur de thèse. Cet événement est prévu durant votre première année d'études. (Référence : Page 10 du document)",
+      "timestamp": "2025-12-09T11:16:54.313642",
+      "sources": [
+        {
+          "source": "Master S3 MIIEL TA 2024-2025.docx",
+          "category": "emploi_temps",
+          "score": 0.06601463914109248,
+          "excerpt": null
+        },
+        {
+          "source": "Master S3 MIIEL TN 2024-2025.docx",
+          "category": "emploi_temps",
+          "score": 0.06587499271249851,
+          "excerpt": null
+        },
+        {
+          "source": "Charte_UM5R Version 19 Juillet 2022.pdf",
+          "category": "reglements",
+          "score": 0.05979847805227006,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_f0185a9a",
+      "role": "user",
+      "content": "mais c'est faux",
+      "timestamp": "2025-12-09T11:17:26.704863",
+      "sources": []
+    },
+    {
+      "id": "msg_614a09ad",
+      "role": "assistant",
+      "content": "Je suis désolé si j'ai mal compris votre question. Pouvez-vous la reformuler pour que je puisse vous fournir une réponse précise ? Selon les documents disponibles, il n'y a pas de référence à ce sujet.",
+      "timestamp": "2025-12-09T11:17:34.049780",
+      "sources": [
+        {
+          "source": "Règlement Interieur des Formations continues_UM5_2019.pdf",
+          "category": "reglements",
+          "score": 0.14373344306635438,
+          "excerpt": null
+        },
+        {
+          "source": "Réglement_interieur_2020-2021_ENSIAS.pdf",
+          "category": "reglements",
+          "score": 0.12830057918893972,
+          "excerpt": null
+        },
+        {
+          "source": "Réglement_interieur_2020-2021_ENSIAS.pdf",
+          "category": "reglements",
+          "score": 0.12420341896509746,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_9029a329",
+      "role": "user",
+      "content": "Je viens de m'inscrire en 1ere annee master. Comment obtenir mon attestation d'inscription?",
+      "timestamp": "2025-12-09T11:18:11.555942",
+      "sources": []
+    },
+    {
+      "id": "msg_0d01e429",
+      "role": "assistant",
+      "content": "Selon le document \"Règlement Interieur des Formations continues_UM5_2019.pdf\", vous recevrez une attestation d'inscription le jour du règlement des frais d'inscription, justifié par la présentation du récépissé de règlement.",
+      "timestamp": "2025-12-09T11:18:15.240385",
+      "sources": [
+        {
+          "source": "Règlement Interieur des Formations continues_UM5_2019.pdf",
+          "category": "reglements",
+          "score": 0.1400248661330439,
+          "excerpt": null
+        },
+        {
+          "source": "Règlement Interieur des Formations continues_UM5_2019.pdf",
+          "category": "reglements",
+          "score": 0.12369669291929343,
+          "excerpt": null
+        },
+        {
+          "source": "faq.pdf",
+          "category": "faqs",
+          "score": 0.12165850583088941,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_76a707f4",
+      "role": "user",
+      "content": "j'ai deja regle les frais",
+      "timestamp": "2025-12-09T11:19:03.735460",
+      "sources": []
+    },
+    {
+      "id": "msg_bcc0fdae",
+      "role": "assistant",
+      "content": "Bonjour, j'ai entendu que vous avez déjà réglé les frais d'inscription. Selon le document \"Règlement Interieur des Formations continues\\_UM5\\_2019.pdf\", une fois que les frais sont réglementés, vous recevrez une attestation d'inscription. Si vous avez besoin de cette attestation, je vous conseille de contacter le bureau de la formation continue de votre établissement pour en demander une copie.\n\n[Document 1 - Règlement Interieur des Formations continues\\_UM5\\_2019.pdf]\n[Document 2 - Règlement Interieur des Formations continues\\_UM5\\_2019.pdf]\n[Document 3 - Réglement\\_interieur\\_2020-2021\\_ENSIAS.pdf]",
+      "timestamp": "2025-12-09T11:19:13.429828",
+      "sources": [
+        {
+          "source": "Règlement Interieur des Formations continues_UM5_2019.pdf",
+          "category": "reglements",
+          "score": 0.09361710637775109,
+          "excerpt": null
+        },
+        {
+          "source": "Règlement Interieur des Formations continues_UM5_2019.pdf",
+          "category": "reglements",
+          "score": 0.08128067667750848,
+          "excerpt": null
+        },
+        {
+          "source": "Réglement_interieur_2020-2021_ENSIAS.pdf",
+          "category": "reglements",
+          "score": 0.08028409244473872,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_3fdeb027",
+      "role": "user",
+      "content": "N'ya t'il pas une plateforme en ligne pour faire la demande?",
+      "timestamp": "2025-12-09T11:20:04.696028",
+      "sources": []
+    },
+    {
+      "id": "msg_a355122d",
+      "role": "assistant",
+      "content": "Oui, il y a une plateforme en ligne pour faire une demande, vous pouvez consulter notre site web ou utiliser la plateforme suivante : <http://preinscription.um5.ac.ma/> pour en savoir plus.",
+      "timestamp": "2025-12-09T11:20:10.347136",
+      "sources": [
+        {
+          "source": "Règlement Interieur des Formations continues_UM5_2019.pdf",
+          "category": "reglements",
+          "score": 0.0642465831229566,
+          "excerpt": null
+        },
+        {
+          "source": "Règlement Interieur des Formations continues_UM5_2019.pdf",
+          "category": "reglements",
+          "score": 0.06193433640588462,
+          "excerpt": null
+        },
+        {
+          "source": "faq.pdf",
+          "category": "faqs",
+          "score": 0.06180487813503667,
+          "excerpt": null
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "message_count": 16
+  }
+}

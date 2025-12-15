@@ -59,7 +59,56 @@ class RAGService:
         print(f"   🤖 Connexion HuggingFace API...")
         self.llm_client = InferenceClient(token=HUGGINGFACE_API_KEY)
         
+        # Mémoire conversationnelle
+        self.conversation_history = []
+        self.max_history = 5  # Garder 5 derniers échanges
+        
         print("✅ Service RAG prêt !\n")
+    
+
+    def add_to_history(self, question: str, answer: str):
+        """
+        Ajoute un échange à l'historique
+        
+        Args:
+            question: Question de l'utilisateur
+            answer: Réponse de l'assistant
+        """
+        
+        self.conversation_history.append({
+            'question': question,
+            'answer': answer
+        })
+        
+        # Limiter la taille de l'historique
+        if len(self.conversation_history) > self.max_history:
+            self.conversation_history.pop(0)
+    
+    
+    def get_conversation_context(self) -> str:
+        """
+        Construit le contexte conversationnel
+        
+        Returns:
+            Historique formaté pour le prompt
+        """
+        
+        if not self.conversation_history:
+            return ""
+        
+        context = "\nHistorique de la conversation :\n"
+        for i, exchange in enumerate(self.conversation_history, 1):
+            context += f"\nÉchange {i}:\n"
+            context += f"Étudiant: {exchange['question']}\n"
+            context += f"Assistant: {exchange['answer']}\n"
+        
+        return context
+    
+    
+    def clear_history(self):
+        """Efface l'historique de conversation"""
+        self.conversation_history = []
+        print("🗑️ Historique effacé")
     
     
     def retrieve_documents(
@@ -109,53 +158,64 @@ class RAGService:
     def generate_prompt(
         self, 
         query: str, 
-        documents: List[Dict]
+        documents: List[Dict],
+        include_history: bool = True
     ) -> str:
         """
-        Construit le prompt pour le LLM
-        
-        Structure :
-        1. Instructions système
-        2. Contexte (documents récupérés)
-        3. Question
-        4. Instructions de réponse
+        Construit le prompt avec contexte + historique
+        VERSION AMÉLIORÉE : Plus naturel, moins robotique
         """
         
-        # Construire le contexte à partir des documents
+        # Contexte documentaire
         context = ""
         for i, doc in enumerate(documents, 1):
             source = doc['metadata']['source']
-            category = doc['metadata']['category']
             text = doc['text']
             
-            context += f"\n[Document {i}]\n"
-            context += f"Source: {source}\n"
-            context += f"Catégorie: {category}\n"
-            context += f"Contenu: {text}\n"
+            context += f"\n[Document {i} - {source}]\n{text}\n"
             context += "-" * 60 + "\n"
         
-        # Prompt complet
-        prompt = f"""Tu es un assistant virtuel pour les étudiants de l'Université Mohammed V de Rabat (UM5).
-        Ton rôle :
-        - Répondre aux questions sur les emplois du temps, règlements, procédures et FAQ
-        - Utiliser UNIQUEMENT les informations fournies dans le contexte
-        - Citer les sources de tes informations
-        - Être précis, bienveillant et professionnel
-        Contexte disponible :
-        {context}
-        Question de l'étudiant : {query}
-        Instructions pour ta réponse :
-        1. Réponds en te basant UNIQUEMENT sur le contexte ci-dessus
-        2. Si l'information n'est pas dans le contexte, dis "Je n'ai pas cette information dans ma base de connaissances"
-        3. Cite la source (nom du document) pour chaque information
-        4. Sois concis mais complet
-        5. Utilise un ton professionnel mais accessible
-        6. Si les questions sont poses en Francais, tu Dois repondre en Francais et non en Anglais.
-        7. Tu ne reponds en anglais que si on te pose des question en anglais sinon reponds en Francais
-        Réponse :"""
+        # Historique conversationnel
+        history_context = ""
+        if include_history and self.conversation_history:
+            history_context = "\n\nÉchanges précédents :\n"
+            for i, exchange in enumerate(self.conversation_history[-3:], 1):  # 3 derniers
+                history_context += f"Q{i}: {exchange['question']}\n"
+                history_context += f"R{i}: {exchange['answer'][:100]}...\n\n"
+        
+        # Prompt amélioré
+        prompt = f"""Tu es un assistant bienveillant pour les étudiants de l'Université Mohammed V de Rabat (UM5).
+
+    CONTEXTE :
+    Tu as accès aux documents officiels de l'université (calendriers, règlements, procédures, FAQs).
+    {history_context}
+
+    DOCUMENTS DISPONIBLES :
+    {context}
+
+    INSTRUCTIONS IMPORTANTES :
+    1. Si la question est une salutation simple (bonjour, salut, hello) :
+    → Réponds chaleureusement et propose ton aide
+    → N'utilise PAS les documents, c'est juste une salutation
+    
+    2. Pour les vraies questions (emplois du temps, règles, inscriptions, etc.) :
+    → Utilise UNIQUEMENT les informations dans les documents ci-dessus
+    → Si l'info n'existe pas dans les documents, dis : "Je n'ai pas cette information dans ma base de connaissances."
+    → Cite la source : "Selon [nom du document]..."
+    
+    3. Style de réponse :
+    → Naturel et conversationnel (pas robotique)
+    → Concis (2-4 phrases maximum)
+    → Professionnel mais accessible
+    → En français si question en français
+
+    QUESTION DE L'ÉTUDIANT :
+    {query}
+
+    TA RÉPONSE (directe, naturelle, concise) :"""
 
         return prompt
-    
+        
     
     def generate_answer(
         self, 
@@ -194,58 +254,195 @@ class RAGService:
         except Exception as e:
             return f"Erreur lors de la génération : {str(e)}"
     
+    def reformulate_query(self, query: str) -> str:
+        """
+        Reformule la question en incluant le contexte conversationnel
+        Exemple :
+        Historique: "Quand commence le semestre d'automne ?"
+        Question: "Et combien de temps dure-t-il ?"
+        Reformulé: "Combien de temps dure le semestre d'automne ?"
+        Args:
+        query: Question actuelle (peut être vague)
+        Returns:
+        Question reformulée (plus explicite)
+        """
+    
+        # Si pas d'historique ou question déjà explicite, retourner tel quel
+        if not self.conversation_history:
+            return query
+    
+        # Si question courte avec pronom (il, elle, ça, etc.)
+        pronouns = ['il', 'elle', 'ça', 'cela', 'ils', 'elles']
+        is_followup = any(pronoun in query.lower() for pronoun in pronouns)
+        if not is_followup and len(query.split()) > 5:
+            return query  # Question déjà explicite
+    
+        print(f"   🔄 Reformulation avec contexte...")
+    
+        # Construire prompt de reformulation
+        last_exchange = self.conversation_history[-1]
+        reformulation_prompt = f"""Tu dois reformuler une question de suivi pour la rendre explicite.
+        Contexte de la conversation précédente :
+        Question précédente : {last_exchange['question']}
+        Réponse donnée : {last_exchange['answer'][:200]}
+        Question de suivi (vague) : {query}
+        Ta tâche : Reformuler cette question de suivi pour qu'elle soit explicite et autonome.
+        Ne réponds PAS à la question, reformule-la seulement.
+        Exemple :
+        Contexte : "Quand commence le semestre d'automne ?"
+        Question : "Et combien de temps dure-t-il ?"
+        Reformulé : "Combien de temps dure le semestre d'automne ?"
+
+        Reformulation (une seule phrase, sans explication) :"""
+
+        try:
+            messages = [{"role": "user", "content": reformulation_prompt}]
+        
+            response = self.llm_client.chat_completion(
+                messages=messages,
+                model=LLM_MODEL,
+                max_tokens=50,
+                temperature=0.3  # Bas pour être précis
+            )
+        
+            reformulated = response.choices[0].message.content.strip()
+            print(f"   ✅ Reformulé : {reformulated}")
+        
+            return reformulated
+        
+        except Exception as e:
+            print(f"   ⚠️ Erreur reformulation, utilisation question originale")
+            return query
+        
+
+    
+    def is_greeting(self, question: str) -> bool:
+        """
+        Détecte si c'est une salutation OU formule de politesse
+        (ne nécessitant pas de recherche documentaire)
+        """
+        
+        # Salutations et formules de politesse
+        simple_phrases = [
+            # Salutations
+            'bonjour', 'salut', 'hello', 'hi', 'hey', 'coucou', 'bonsoir',
+            # Politesse
+            'merci', 'thanks', 'thank you', 'd\'accord', 'ok', 'okay',
+            'au revoir', 'bye', 'à bientôt', 'à plus',
+            # Expressions courtes
+            'oui', 'non', 'bien', 'super', 'cool', 'parfait', 'génial'
+        ]
+        
+        question_lower = question.lower().strip()
+        
+        # Phrase courte (1-3 mots)
+        if len(question_lower.split()) <= 3:
+            return any(phrase in question_lower for phrase in simple_phrases)
+        
+        return False
+
+
+    def handle_greeting(self, question: str) -> str:
+        """
+        Réponse adaptée selon le type de message
+        """
+        
+        question_lower = question.lower().strip()
+        
+        # Merci / Remerciements
+        if any(word in question_lower for word in ['merci', 'thanks', 'thank you']):
+            responses = [
+                "De rien ! 😊 N'hésitez pas si vous avez d'autres questions.",
+                "Avec plaisir ! Je suis là pour vous aider.",
+                "Heureux de vous aider ! Autre chose ?"
+            ]
+        
+        # Au revoir
+        elif any(word in question_lower for word in ['au revoir', 'bye', 'à bientôt', 'à plus']):
+            responses = [
+                "À bientôt ! Bonne journée ! 👋",
+                "Au revoir ! N'hésitez pas à revenir si besoin.",
+                "À plus tard ! Bonne continuation dans vos études ! 🎓"
+            ]
+        
+        # Confirmations (ok, d'accord, etc.)
+        elif any(word in question_lower for word in ['ok', 'okay', 'd\'accord', 'bien', 'parfait']):
+            responses = [
+                "Super ! Autre question ?",
+                "Parfait ! Comment puis-je vous aider d'autre ?",
+                "D'accord ! N'hésitez pas pour d'autres questions."
+            ]
+        
+        # Salutations par défaut
+        else:
+            responses = [
+                "Bonjour ! 👋 Je suis l'assistant virtuel de l'UM5. Comment puis-je vous aider ?",
+                "Salut ! 😊 Posez-moi vos questions sur les emplois du temps, règlements et procédures.",
+                "Bonjour ! Bienvenue ! Que souhaitez-vous savoir sur l'UM5 ?"
+            ]
+        
+        import random
+        return random.choice(responses)
+    
     
     def ask(
         self, 
         question: str,
         n_results: int = 3,
-        category_filter: Optional[str] = None
+        use_history: bool = True
     ) -> Dict:
         """
-        Pipeline RAG complet
-        
-        C'est la fonction principale qui orchestre tout :
-        1. Retrieval (recherche)
-        2. Prompt generation
-        3. Answer generation
-        4. Source formatting
-        
-        Args:
-            question: Question de l'utilisateur
-            n_results: Nombre de documents à récupérer
-            category_filter: Filtrer par catégorie
-        
-        Returns:
-            Dict avec answer, sources, metadata
+        Pipeline RAG complet avec gestion salutations
         """
         
         print(f"\n❓ Question : {question}")
         
-        # 1. Retrieval
-        print("   🔍 Recherche documents pertinents...")
-        documents = self.retrieve_documents(
-            query=question,
-            n_results=n_results,
-            category_filter=category_filter
-        )
+        # 0. Détecter salutation
+        if self.is_greeting(question):
+            print("   👋 Message simple détecté (pas de recherche doc)")
+            
+            answer = self.handle_greeting(question)  # ← Passer la question
+            
+            return {
+                'question': question,
+                'answer': answer,
+                'sources': [],
+                'reformulated_query': None,
+                'is_greeting': True
+            }
         
+        # 1. Reformuler si nécessaire
+        search_query = question
+        if use_history and self.conversation_history:
+            search_query = self.reformulate_query(question)
+        
+        # 2. Retrieval
+        print("   🔍 Recherche documents pertinents...")
+        documents = self.retrieve_documents(query=search_query, n_results=n_results)
         print(f"   ✅ {len(documents)} documents trouvés")
         
-        # 2. Generate prompt
+        # 3. Generate prompt
         print("   📝 Construction du prompt...")
-        prompt = self.generate_prompt(question, documents)
+        prompt = self.generate_prompt(
+            question,
+            documents, 
+            include_history=use_history
+        )
         
-        # 3. Generate answer
-        print("   ...Génération de la réponse...")
-        answer = self.generate_answer(prompt)
+        # 4. Generate answer
+        print("   🤖 Génération de la réponse...")
+        answer = self.generate_answer(prompt, max_tokens=200)  # Réduit pour concision
         
-        # 4. Format sources
+        # 5. Ajouter à l'historique
+        if use_history:
+            self.add_to_history(question, answer)
+        
+        # 6. Format sources
         sources = [
             {
                 'source': doc['metadata']['source'],
                 'category': doc['metadata']['category'],
-                'score': doc['score'],
-                'excerpt': doc['text'][:200] + "..."
+                'score': doc['score']
             }
             for doc in documents
         ]
@@ -256,56 +453,53 @@ class RAGService:
             'question': question,
             'answer': answer,
             'sources': sources,
-            'metadata': {
-                'n_documents_used': len(documents),
-                'model': LLM_MODEL
-            }
+            'reformulated_query': search_query if search_query != question else None,
+            'is_greeting': False
         }
-
 
 # ============================================
 # FONCTION DE TEST
 # ============================================
 
-def test_rag_service():
-    """Teste le service RAG avec des questions exemples"""
+def test_conversation():
+    """Teste une conversation multi-tours"""
     
     print("=" * 70)
-    print("TEST DU SERVICE RAG")
+    print("TEST CONVERSATION MULTI-TOURS")
     print("=" * 70 + "\n")
     
-    # Initialiser le service
     rag = RAGService()
     
-    # Questions test
-    test_questions = [
-        "Quand commence le semestre d'hiver 2024-2025 ?",
-        "Quelles sont les règles concernant les absences à l'ENSIAS ?",
-        "Comment s'inscrire à l'UM5 pour 2025-2026 ?"
+    # Conversation
+    questions = [
+        "Bonjour !"
+        "Quand commence le semestre d'automne 2024 ?",
+        "Et combien de temps dure-t-il ?",  # ← Référence à question précédente
+        "Merci ! Maintenant, quelles sont les règles d'absence ?"
     ]
     
-    # Tester chaque question
-    for i, question in enumerate(test_questions, 1):
-        print("=" * 70)
-        print(f"TEST {i}/{len(test_questions)}")
-        print("=" * 70)
+    for i, q in enumerate(questions, 1):
+        print(f"\n{'='*70}")
+        print(f"TOUR {i}")
+        print(f"{'='*70}")
         
-        result = rag.ask(question)
+        result = rag.ask(q, use_history=True)
         
-        print(f"\n📌 QUESTION :")
-        print(f"   {result['question']}")
-        
-        print(f"\n💬 RÉPONSE :")
-        print(f"   {result['answer']}")
-        
-        print(f"\n📚 SOURCES ({len(result['sources'])}) :")
-        for j, source in enumerate(result['sources'], 1):
-            print(f"\n   {j}. {source['source']}")
-            print(f"      Catégorie : {source['category']}")
-            print(f"      Score : {source['score']:.3f}")
-            print(f"      Extrait : {source['excerpt'][:100]}...")
-        
-        print("\n")
+        print(f"\n❓ {result['question']}")
+        print(f"\n💬 {result['answer']}")
+        print(f"\n📚 Sources : {', '.join([s['source'][:30] for s in result['sources']])}")
+    
+    # Effacer historique
+    print(f"\n{'='*70}")
+    rag.clear_history()
+
+
+if __name__ == "__main__":
+    # Test simple
+    # test_rag_service()
+    
+    # Test conversation
+    test_conversation()
 
 
 # ============================================
@@ -313,4 +507,4 @@ def test_rag_service():
 # ============================================
 
 if __name__ == "__main__":
-    test_rag_service()
+    test_conversation()

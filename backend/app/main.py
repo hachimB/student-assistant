@@ -7,6 +7,7 @@ Point d'entrée de l'API
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .api.routes import router
+from .services.rag_service import get_embedding_model
 
 # ============================================
 # APPLICATION
@@ -59,6 +60,12 @@ async def root():
 async def startup_event():
     """Exécuté au démarrage de l'API"""
     print("🚀 API démarrée")
+    print("📦 Pré-chargement du modèle d'embeddings...")
+    
+    # Charger le modèle UNE FOIS au démarrage
+    get_embedding_model()
+    
+    print("✅ Modèle prêt - API opérationnelle")
     print("📚 Documentation : http://localhost:8000/docs")
 
 

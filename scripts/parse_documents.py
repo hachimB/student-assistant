@@ -210,7 +210,7 @@ def extract_all_documents():
     """
     
     raw_dir = Path("data/raw")
-    categories = ["emploi_temps", "reglements", "procedures", "notes", "faqs"]
+    categories = ["emploi_temps", "reglements", "procedures", "notes", "faqs", "um5"]
     
     all_documents = []
     stats = {

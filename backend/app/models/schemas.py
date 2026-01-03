@@ -29,7 +29,7 @@ class QuestionRequest(BaseModel):
     
     question: str = Field(
         ...,  # Requis
-        min_length=3,
+        min_length=2,
         max_length=500,
         description="Question de l'étudiant",
         examples=["Quand commence le semestre d'hiver ?"]

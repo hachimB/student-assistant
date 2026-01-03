@@ -1,0 +1,174 @@
+{
+  "id": "conv_d81c1469e1f2",
+  "created_at": "2025-12-23T09:42:02.919703",
+  "updated_at": "2025-12-23T10:40:50.940663",
+  "messages": [
+    {
+      "id": "msg_819aa888",
+      "role": "user",
+      "content": "Bonjour",
+      "timestamp": "2025-12-23T09:42:13.699386",
+      "sources": []
+    },
+    {
+      "id": "msg_1d3b0195",
+      "role": "assistant",
+      "content": "Bonjour ! 👋 Je suis l'assistant virtuel de l'UM5. Comment puis-je vous aider ?",
+      "timestamp": "2025-12-23T09:42:13.699749",
+      "sources": []
+    },
+    {
+      "id": "msg_74ea391e",
+      "role": "user",
+      "content": "Donne moi l'emploi du temps de cette année",
+      "timestamp": "2025-12-23T10:34:27.506133",
+      "sources": []
+    },
+    {
+      "id": "msg_ab5a4651",
+      "role": "assistant",
+      "content": "Selon le document \"Calendrier prévisionnel de l'Année Universitaire 2024-2025 (Temps Normal)-UM5.pdf\", les périodes de cours des semestres d'automne sont du 18 septembre 2024 au 21 janvier 2025, et celles des semestres de printemps sont du 17 février 2025 au 16 juillet 2025. Les vacances sont mentionnées dans le document. Si vous avez besoin d'informations supplémentaires, je vous conseille de contacter le service scolarité de votre faculté ou de se référencer à la plateforme de préinscription de l'UM5 (preinscription.um5.ac.ma) ou au site officiel de l'UM5 (www.um5",
+      "timestamp": "2025-12-23T10:34:35.676044",
+      "sources": [
+        {
+          "source": "Calendrier prévisionnel de l’Année Universitaire 2024– 2025 (Temps Normal)-UM5.pdf",
+          "category": "emploi_temps",
+          "score": 0.1033641635556982,
+          "excerpt": null
+        },
+        {
+          "source": "Master S1 MSDG TN 24_25.docx",
+          "category": "emploi_temps",
+          "score": 0.0850004426025549,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_0af2fe88",
+      "role": "user",
+      "content": "Donne moi l'emploi du temps de cette année",
+      "timestamp": "2025-12-23T10:37:25.169130",
+      "sources": []
+    },
+    {
+      "id": "msg_1ab6a088",
+      "role": "assistant",
+      "content": "Selon le document \"Calendrier prévisionnel de l'Année Universitaire 2024-2025 (Temps Normal)-UM5.pdf\", les périodes de cours des semestres d'Automne et Printemps sont respectivement du 18 septembre 2024 au 25 juin 2025 et du 17 février 2025 au Mai 2025. Les dates précises des débuts et des fins des vacances sont mentionnées dans le document.\n\nPour en savoir plus sur les détails des programmes et des dates des cours spécifiques, je vous conseille de consulter les documents relatifs aux Masters S1 MSDG, S1-TA MIIEL, S3 MIIEL et les documents des Masters en sciences juridiques (S1 et S2) disponibles sur le",
+      "timestamp": "2025-12-23T10:37:33.326805",
+      "sources": [
+        {
+          "source": "Calendrier prévisionnel de l’Année Universitaire 2024– 2025 (Temps Normal)-UM5.pdf",
+          "category": "emploi_temps",
+          "score": 0.1033641635556982,
+          "excerpt": null
+        },
+        {
+          "source": "Master S1 MSDG TN 24_25.docx",
+          "category": "emploi_temps",
+          "score": 0.0850004426025549,
+          "excerpt": null
+        },
+        {
+          "source": "Master S1-TA MIIEL-2024-2025.docx",
+          "category": "emploi_temps",
+          "score": 0.08299537364998832,
+          "excerpt": null
+        },
+        {
+          "source": "Master S3 MIIEL TN 2024-2025.docx",
+          "category": "emploi_temps",
+          "score": 0.08176816673539322,
+          "excerpt": null
+        },
+        {
+          "source": "الماستر العلوم القانونية T-N S1 2024-2025.docx",
+          "category": "emploi_temps",
+          "score": 0.07978127591181829,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_cc5df3da",
+      "role": "user",
+      "content": "Quels sont les modules de Master Informatique ?",
+      "timestamp": "2025-12-23T10:39:10.960969",
+      "sources": []
+    },
+    {
+      "id": "msg_d231ce02",
+      "role": "assistant",
+      "content": "Selon le document \"S1 Master droit public EPI 2024-2025.docx\", le Master concerné est \"Etudes Politiques et Internationales\" (EPI). Les documents disponibles ne fournissent pas des informations détaillées sur les modules de Master Informatique. Je vous conseille de contacter le service scolarité de votre faculté ou de consulter la plateforme de préinscription d'UM5 pour obtenir les dernières informations sur les modules offerts dans le Master Informatique. (Source : https://preinscription.um5.ac.ma et https://www.um5.ac.ma)",
+      "timestamp": "2025-12-23T10:39:17.317892",
+      "sources": [
+        {
+          "source": "Réglement_interieur_2020-2021_ENSIAS.pdf",
+          "category": "reglements",
+          "score": 0.0792409441571313,
+          "excerpt": null
+        },
+        {
+          "source": "Réglement_interieur_2020-2021_ENSIAS.pdf",
+          "category": "reglements",
+          "score": 0.06955702187772968,
+          "excerpt": null
+        },
+        {
+          "source": "Réglement_interieur_2020-2021_ENSIAS.pdf",
+          "category": "reglements",
+          "score": 0.0693967401713608,
+          "excerpt": null
+        },
+        {
+          "source": "Charte_UM5R Version 19 Juillet 2022.pdf",
+          "category": "reglements",
+          "score": 0.06866332252174476,
+          "excerpt": null
+        },
+        {
+          "source": "S1 Master droit public EPI 2024-2025.docx",
+          "category": "emploi_temps",
+          "score": 0.06858672913875048,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_c62e037c",
+      "role": "user",
+      "content": "Comment obtenir mon attestation d'inscription ?",
+      "timestamp": "2025-12-23T10:40:42.959289",
+      "sources": []
+    },
+    {
+      "id": "msg_8baded1a",
+      "role": "assistant",
+      "content": "Selon le document \"Guide complet des démarches et dates clés de l'inscription à l'Université Mohammed V de Rabat (UM5) 2025-2026 sur preinscription.um5.ac.ma.pdf\", après avoir été admis, les étudiants doivent se présenter à leur faculté ou école avec les pièces suivantes : original du baccalauréat et copies, copie de la CIN et photo d'identité, formulaire d'inscription imprimé via le portail, et frais d'inscription. Cependant, le document ne précise pas comment obtenir l'attestation d'inscription. Je vous conseille de contacter le service scolarité de votre faculté ou utiliser la plateforme de préinscription de l'UM5 pour obtenir des informations",
+      "timestamp": "2025-12-23T10:40:50.940650",
+      "sources": [
+        {
+          "source": "Inscription à l’UniUniversité Mohammed V de Rabat (UM5) 2025-2026 sur preinscription.um5.ac.ma.pdf",
+          "category": "procedures",
+          "score": 0.0722262149828123,
+          "excerpt": null
+        },
+        {
+          "source": "Inscription à l’UniUniversité Mohammed V de Rabat (UM5) 2025-2026 sur preinscription.um5.ac.ma.pdf",
+          "category": "procedures",
+          "score": 0.05597923243594032,
+          "excerpt": null
+        },
+        {
+          "source": "Inscription à l’UniUniversité Mohammed V de Rabat (UM5) 2025-2026 sur preinscription.um5.ac.ma.pdf",
+          "category": "procedures",
+          "score": 0.04985564070101127,
+          "excerpt": null
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "message_count": 10
+  }
+}

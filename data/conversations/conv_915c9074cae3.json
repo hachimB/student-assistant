@@ -1,0 +1,191 @@
+{
+  "id": "conv_915c9074cae3",
+  "created_at": "2025-12-23T21:33:55.312836",
+  "updated_at": "2025-12-24T09:14:39.319132",
+  "messages": [
+    {
+      "id": "msg_91541074",
+      "role": "user",
+      "content": "bonjour",
+      "timestamp": "2025-12-24T08:47:14.789380",
+      "sources": []
+    },
+    {
+      "id": "msg_505ce3a7",
+      "role": "assistant",
+      "content": "Bonjour ! 👋 Je suis l'assistant virtuel de l'UM5. Comment puis-je vous aider ?",
+      "timestamp": "2025-12-24T08:47:14.790121",
+      "sources": []
+    },
+    {
+      "id": "msg_2a30ffb3",
+      "role": "user",
+      "content": "quand commence le rentree",
+      "timestamp": "2025-12-24T09:06:48.383930",
+      "sources": []
+    },
+    {
+      "id": "msg_cdde45b6",
+      "role": "assistant",
+      "content": "\"Selon le document 2, les cours de temps normal commencent le lundi 17 février 2025.\" (Document 2 - Calendrier prévisionnel de l'Année Universitaire 2024- 2025: Temps Normal)\n\nCONTACTS UTILES :\n- Service scolarité de votre faculté\n- Plateforme de préinscription : <https://preinscription.um5.ac.ma>\n- Site officiel UM5 : <https://www.um5.ac.ma>",
+      "timestamp": "2025-12-24T09:06:57.621979",
+      "sources": [
+        {
+          "source": "الماستر العلوم القانونية T-N S1 2024-2025.docx",
+          "category": "emploi_temps",
+          "score": 0.1085902373837335,
+          "excerpt": null
+        },
+        {
+          "source": "Calendrier prévisionnel de l’Année Universitaire 2024– 2025 (Temps Normal)-UM5.pdf",
+          "category": "emploi_temps",
+          "score": 0.10181598984574418,
+          "excerpt": null
+        },
+        {
+          "source": "Master S1 MSDG TN 24_25.docx",
+          "category": "emploi_temps",
+          "score": 0.10114689467778247,
+          "excerpt": null
+        },
+        {
+          "source": "S3 Master Sc. Juri  FR  T-A 2024-2025.docx",
+          "category": "emploi_temps",
+          "score": 0.09788190873904007,
+          "excerpt": null
+        },
+        {
+          "source": "الماستر العلوم القانونية الموظفون S1 TA 2024 -2025.docx",
+          "category": "emploi_temps",
+          "score": 0.09774640259183977,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_67296f98",
+      "role": "user",
+      "content": "comment faire mon inscription ?",
+      "timestamp": "2025-12-24T09:07:43.827845",
+      "sources": []
+    },
+    {
+      "id": "msg_e196db8b",
+      "role": "assistant",
+      "content": "Selon le document 3, les étapes pour faire une inscription à l'Université Mohammed V de Rabat (UM5) en 2025-2026 sont :\n\n1. Visiter la plateforme de préinscription sur preinscription.um5.ac.ma.\n2. Créer un compte avec votre CIN ou code Massar.\n3. Saisir vos informations personnelles et obtenir des notes au bac.\n4. Choisir vos vœux selon les filières proposées.\n5. Valider et imprimer le résumé de candidature.\n\nSi des informations supplémentaires sont manquantes, je vous conseille de contacter le service scolarité de votre faculté pour plus d'informations.",
+      "timestamp": "2025-12-24T09:07:52.821140",
+      "sources": [
+        {
+          "source": "Inscription à l’UniUniversité Mohammed V de Rabat (UM5) 2025-2026 sur preinscription.um5.ac.ma.pdf",
+          "category": "procedures",
+          "score": 0.08448089307194093,
+          "excerpt": null
+        },
+        {
+          "source": "Inscription à l’UniUniversité Mohammed V de Rabat (UM5) 2025-2026 sur preinscription.um5.ac.ma.pdf",
+          "category": "procedures",
+          "score": 0.05946984533062554,
+          "excerpt": null
+        },
+        {
+          "source": "Inscription à l’UniUniversité Mohammed V de Rabat (UM5) 2025-2026 sur preinscription.um5.ac.ma.pdf",
+          "category": "procedures",
+          "score": 0.054238876042968766,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_f5c1e52e",
+      "role": "user",
+      "content": "ok",
+      "timestamp": "2025-12-24T09:13:11.205662",
+      "sources": []
+    },
+    {
+      "id": "msg_78b84e4b",
+      "role": "assistant",
+      "content": "Parfait ! Comment puis-je vous aider d'autre ?",
+      "timestamp": "2025-12-24T09:13:11.206799",
+      "sources": []
+    },
+    {
+      "id": "msg_69e84aa1",
+      "role": "user",
+      "content": "salut",
+      "timestamp": "2025-12-24T09:13:15.437743",
+      "sources": []
+    },
+    {
+      "id": "msg_df00f468",
+      "role": "assistant",
+      "content": "Bonjour ! Bienvenue ! Que souhaitez-vous savoir sur l'UM5 ?",
+      "timestamp": "2025-12-24T09:13:15.438574",
+      "sources": []
+    },
+    {
+      "id": "msg_d19f4ce8",
+      "role": "user",
+      "content": "comment integrer UM5",
+      "timestamp": "2025-12-24T09:13:44.950636",
+      "sources": []
+    },
+    {
+      "id": "msg_da6a0f17",
+      "role": "assistant",
+      "content": "Selon le document, pour intégrer l'Université Mohammed V de Rabat (UM5) en 2025-2026, il faut suivre les étapes de préinscription en ligne sur la plateforme préinscription.um5.ac.ma. Les documents nécessaires incluent le baccalauréat original et copies, la CIN et une photo d'identité, et les frais d'inscription varient selon les établissements. Les dates clés sont l'ouverture des préinscriptions en juin, les résultats de la sélection en juillet, et les inscriptions administratives en août. Il est important de respecter les conditions d'accès, comme être titulaire d'un baccalauréat marocain ou équivalent et de choisir une filière conforme à la série du bac. Certaines",
+      "timestamp": "2025-12-24T09:13:52.403440",
+      "sources": [
+        {
+          "source": "Inscription à l’UniUniversité Mohammed V de Rabat (UM5) 2025-2026 sur preinscription.um5.ac.ma.pdf",
+          "category": "procedures",
+          "score": 0.046055165741340436,
+          "excerpt": null
+        },
+        {
+          "source": "Inscription à l’UniUniversité Mohammed V de Rabat (UM5) 2025-2026 sur preinscription.um5.ac.ma.pdf",
+          "category": "procedures",
+          "score": 0.03697522610201813,
+          "excerpt": null
+        },
+        {
+          "source": "Inscription à l’UniUniversité Mohammed V de Rabat (UM5) 2025-2026 sur preinscription.um5.ac.ma.pdf",
+          "category": "procedures",
+          "score": 0.034188667335283536,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_f1ca2f0d",
+      "role": "user",
+      "content": "cool",
+      "timestamp": "2025-12-24T09:14:29.797613",
+      "sources": []
+    },
+    {
+      "id": "msg_40b1701d",
+      "role": "assistant",
+      "content": "Bonjour ! 👋 Je suis l'assistant virtuel de l'UM5. Comment puis-je vous aider ?",
+      "timestamp": "2025-12-24T09:14:29.798875",
+      "sources": []
+    },
+    {
+      "id": "msg_1d229321",
+      "role": "user",
+      "content": "ok",
+      "timestamp": "2025-12-24T09:14:39.318410",
+      "sources": []
+    },
+    {
+      "id": "msg_48aab451",
+      "role": "assistant",
+      "content": "Parfait ! Comment puis-je vous aider d'autre ?",
+      "timestamp": "2025-12-24T09:14:39.319122",
+      "sources": []
+    }
+  ],
+  "metadata": {
+    "message_count": 16
+  }
+}

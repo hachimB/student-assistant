@@ -236,28 +236,28 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
         
         # Afficher sources si c'est une réponse de l'assistant
-        if message["role"] == "assistant" and "sources" in message:
-            sources = message['sources']
-            # Afficher sources
-            with st.expander("📚 Sources consultées", expanded=True):
-                if sources:
-                    for i, source in enumerate(sources, 1):
-                        # Tronquer le nom si trop long
-                        source_name = source['source']
-                        if len(source_name) > 60:
-                            source_name = source_name[:57] + "..."
+        # if message["role"] == "assistant" and "sources" in message:
+        #     sources = message['sources']
+        #     # Afficher sources
+        #     with st.expander("📚 Sources consultées", expanded=True):
+        #         if sources:
+        #             for i, source in enumerate(sources, 1):
+        #                 # Tronquer le nom si trop long
+        #                 source_name = source['source']
+        #                 if len(source_name) > 60:
+        #                     source_name = source_name[:57] + "..."
                         
-                        st.markdown(f"""
-                        <div class='source-box'>
-                            <strong>{i}. {source_name}</strong><br>
-                            <div class='source-meta'>
-                                📁 Catégorie : <strong>{source['category']}</strong><br>
-                                📊 Pertinence : <strong>{source['score']:.1%}</strong>
-                            </div>
-                        </div>
-                        """, unsafe_allow_html=True)
-                else:
-                    st.info("Aucune source consultée (question générale)")
+        #                 st.markdown(f"""
+        #                 <div class='source-box'>
+        #                     <strong>{i}. {source_name}</strong><br>
+        #                     <div class='source-meta'>
+        #                         📁 Catégorie : <strong>{source['category']}</strong><br>
+        #                         📊 Pertinence : <strong>{source['score']:.1%}</strong>
+        #                     </div>
+        #                 </div>
+        #                 """, unsafe_allow_html=True)
+        #         else:
+        #             st.info("Aucune source consultée (question générale)")
 
 # Zone de saisie
 if prompt := st.chat_input("Posez votre question..."):
@@ -309,25 +309,25 @@ if prompt := st.chat_input("Posez votre question..."):
                     
                     
                     # Afficher sources
-                    with st.expander("📚 Sources consultées", expanded=True):
-                        if sources:
-                            for i, source in enumerate(sources, 1):
-                                # Tronquer le nom si trop long
-                                source_name = source['source']
-                                if len(source_name) > 60:
-                                    source_name = source_name[:57] + "..."
+                    # with st.expander("📚 Sources consultées", expanded=True):
+                    #     if sources:
+                    #         for i, source in enumerate(sources, 1):
+                    #             # Tronquer le nom si trop long
+                    #             source_name = source['source']
+                    #             if len(source_name) > 60:
+                    #                 source_name = source_name[:57] + "..."
                                 
-                                st.markdown(f"""
-                                <div class='source-box'>
-                                    <strong>{i}. {source_name}</strong><br>
-                                    <div class='source-meta'>
-                                        📁 Catégorie : <strong>{source['category']}</strong><br>
-                                        📊 Pertinence : <strong>{source['score']:.1%}</strong>
-                                    </div>
-                                </div>
-                                """, unsafe_allow_html=True)
-                        else:
-                            st.info("Aucune source consultée (question générale)")
+                    #             st.markdown(f"""
+                    #             <div class='source-box'>
+                    #                 <strong>{i}. {source_name}</strong><br>
+                    #                 <div class='source-meta'>
+                    #                     📁 Catégorie : <strong>{source['category']}</strong><br>
+                    #                     📊 Pertinence : <strong>{source['score']:.1%}</strong>
+                    #                 </div>
+                    #             </div>
+                    #             """, unsafe_allow_html=True)
+                    #     else:
+                    #         st.info("Aucune source consultée (question générale)")
                     
                     # Section feedback
                     # st.markdown("<div class='feedback-section'>", unsafe_allow_html=True)

@@ -8,6 +8,8 @@ Question → Embedding → ChromaDB → Top K chunks → Prompt + LLM → Répon
 import os
 from pathlib import Path
 from typing import List, Dict, Optional
+import warnings
+warnings.filterwarnings('ignore')
 
 from sentence_transformers import SentenceTransformer
 import chromadb
@@ -28,6 +30,32 @@ LLM_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
 HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
 
 # ============================================
+# SINGLETON : Modèle d'embeddings global
+# ============================================
+
+_embedding_model = None  # Variable globale
+
+def get_embedding_model():
+    """
+    Retourne le modèle d'embeddings (chargé une seule fois)
+    Pattern Singleton
+    """
+    global _embedding_model
+    
+    if _embedding_model is None:
+        print("📦 Chargement modèle embeddings (une seule fois)...")
+        
+        _embedding_model = SentenceTransformer(
+            EMBEDDING_MODEL,
+            device='cpu',
+            cache_folder=os.path.expanduser("~/.cache/huggingface/")
+        )
+        
+        print("✅ Modèle embeddings chargé et prêt")
+    
+    return _embedding_model
+
+# ============================================
 # SERVICE RAG
 # ============================================
 
@@ -42,26 +70,25 @@ class RAGService:
     """
     
     def __init__(self):
-        """Initialise le service RAG"""
+        """Initialise le service RAG (réutilise le modèle global)"""
         
         print("🚀 Initialisation du service RAG...")
         
-        # 1. Modèle d'embeddings
-        print(f"   📦 Chargement modèle embeddings...")
-        self.embedding_model = SentenceTransformer(EMBEDDING_MODEL)
+        # 1. Embeddings (réutilise modèle global)
+        self.embedding_model = get_embedding_model()  # ← Utilise singleton
         
         # 2. ChromaDB
         print(f"   🗄️ Connexion ChromaDB...")
         self.chroma_client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
         self.collection = self.chroma_client.get_collection(name=COLLECTION_NAME)
         
-        # 3. LLM Client
+        # 3. LLM
         print(f"   🤖 Connexion HuggingFace API...")
         self.llm_client = InferenceClient(token=HUGGINGFACE_API_KEY)
         
-        # Mémoire conversationnelle
+        # 4. Mémoire
         self.conversation_history = []
-        self.max_history = 5  # Garder 5 derniers échanges
+        self.max_history = 5
         
         print("✅ Service RAG prêt !\n")
     
@@ -112,58 +139,138 @@ class RAGService:
     
     
     def retrieve_documents(
-        self, 
-        query: str, 
-        n_results: int = 3,
-        category_filter: Optional[str] = None
-    ) -> List[Dict]:
+    self, 
+    query: str, 
+    n_results: int = 3,
+    category_filter: Optional[str] = None
+) -> List[Dict]:
         """
         Recherche les documents pertinents
         
-        Args:
-            query: Question de l'utilisateur
-            n_results: Nombre de résultats à retourner
-            category_filter: Filtrer par catégorie (optionnel)
-        
-        Returns:
-            Liste de documents avec métadonnées
+        AMÉLIORÉ : Détection automatique de catégorie
         """
+        
+        # Détecter automatiquement la catégorie si non fournie
+        if not category_filter:
+            category_filter = self._detect_category(query)
         
         # Générer embedding de la question
         query_embedding = self.embedding_model.encode([query])[0]
         
+        # Préparer filtres ChromaDB
+        where_filter = None
+        if category_filter and category_filter != "all":
+            where_filter = {"category": category_filter}
+        
         # Rechercher dans ChromaDB
-        results = self.collection.query(
-            query_embeddings=[query_embedding.tolist()],
-            n_results=n_results,
-            # where={"category": category_filter} if category_filter else None
-        )
+        try:
+            results = self.collection.query(
+                query_embeddings=[query_embedding.tolist()],
+                n_results=n_results * 2,  # Récupérer plus pour filtrer
+                where=where_filter
+            )
+            
+            # Formater les résultats
+            documents = []
+            for doc, meta, distance in zip(
+                results['documents'][0],
+                results['metadatas'][0],
+                results['distances'][0]
+            ):
+                documents.append({
+                    'text': doc,
+                    'metadata': meta,
+                    'score': 1 / (1 + abs(distance))
+                })
+            
+            # Limiter au nombre demandé
+            documents = documents[:n_results]
+            
+            return documents
+            
+        except Exception as e:
+            print(f"⚠️ Erreur retrieval : {e}")
+            # Fallback sans filtre
+            results = self.collection.query(
+                query_embeddings=[query_embedding.tolist()],
+                n_results=n_results
+            )
+            
+            documents = []
+            for doc, meta, distance in zip(
+                results['documents'][0],
+                results['metadatas'][0],
+                results['distances'][0]
+            ):
+                documents.append({
+                    'text': doc,
+                    'metadata': meta,
+                    'score': 1 / (1 + abs(distance))
+                })
+            
+            return documents
+
+
+    def _detect_category(self, query: str) -> Optional[str]:
+        """
+        Détecte automatiquement la catégorie d'une question
         
-        # Formater les résultats
-        documents = []
-        for doc, meta, distance in zip(
-            results['documents'][0],
-            results['metadatas'][0],
-            results['distances'][0]
-        ):
-            documents.append({
-                'text': doc,
-                'metadata': meta,
-                'score': 1 / (1 + abs(distance))  # Convertir distance en score 0-1
-            })
+        Args:
+            query: Question de l'utilisateur
         
-        return documents
+        Returns:
+            Catégorie détectée ou None
+        """
+        
+        query_lower = query.lower()
+        
+        # Mots-clés par catégorie
+        categories = {
+            'emploi_temps': [
+                'emploi du temps', 'calendrier', 'horaire', 'planning',
+                'quand commence', 'début', 'fin semestre', 'vacances',
+                'cours', 'séance', 'date examen', 'rentrée'
+            ],
+            'reglements': [
+                'règlement', 'règle', 'charte', 'interdit', 'autorisé',
+                'absence', 'retard', 'sanction', 'discipline',
+                'droit', 'obligation', 'infraction'
+            ],
+            'procedures': [
+                'inscription', 'comment', 'procédure', 'démarche',
+                'documents', 'dossier', 'attestation', 'certificat',
+                's\'inscrire', 'demande', 'formulaire'
+            ],
+            'faqs': [
+                'faq', 'question fréquente', 'aide', 'information',
+                'contact', 'où trouver', 'qui contacter'
+            ]
+        }
+        
+        # Compter matches par catégorie
+        scores = {}
+        for category, keywords in categories.items():
+            score = sum(1 for keyword in keywords if keyword in query_lower)
+            if score > 0:
+                scores[category] = score
+        
+        # Retourner catégorie avec le plus de matches
+        if scores:
+            best_category = max(scores, key=scores.get)
+            print(f"   🏷️ Catégorie détectée : {best_category}")
+            return best_category
+        
+        return None
     
     
     def generate_prompt(
-        self, 
-        query: str, 
-        documents: List[Dict],
-        include_history: bool = True
-    ) -> str:
+    self, 
+    query: str, 
+    documents: List[Dict],
+    include_history: bool = True
+) -> str:
         """
-        Construit le prompt avec contexte + historique
-        VERSION AMÉLIORÉE : Plus naturel, moins robotique
+        Prompt RENFORCÉ contre hallucinations
         """
         
         # Contexte documentaire
@@ -175,44 +282,54 @@ class RAGService:
             context += f"\n[Document {i} - {source}]\n{text}\n"
             context += "-" * 60 + "\n"
         
-        # Historique conversationnel
+        # Historique
         history_context = ""
         if include_history and self.conversation_history:
             history_context = "\n\nÉchanges précédents :\n"
-            for i, exchange in enumerate(self.conversation_history[-3:], 1):  # 3 derniers
+            for i, exchange in enumerate(self.conversation_history[-3:], 1):
                 history_context += f"Q{i}: {exchange['question']}\n"
                 history_context += f"R{i}: {exchange['answer'][:100]}...\n\n"
         
-        # Prompt amélioré
-        prompt = f"""Tu es un assistant bienveillant pour les étudiants de l'Université Mohammed V de Rabat (UM5).
+        # Prompt renforcé
+        prompt = f"""Tu es un assistant de l'UM5. Tu dois être TRÈS PRUDENT et NE JAMAIS inventer d'informations.
 
     CONTEXTE :
-    Tu as accès aux documents officiels de l'université (calendriers, règlements, procédures, FAQs).
+    Tu as accès à des documents officiels limités.
     {history_context}
 
     DOCUMENTS DISPONIBLES :
     {context}
 
-    INSTRUCTIONS IMPORTANTES :
-    1. Si la question est une salutation simple (bonjour, salut, hello) :
-    → Réponds chaleureusement et propose ton aide
-    → N'utilise PAS les documents, c'est juste une salutation
-    
-    2. Pour les vraies questions (emplois du temps, règles, inscriptions, etc.) :
-    → Utilise UNIQUEMENT les informations dans les documents ci-dessus
-    → Si l'info n'existe pas dans les documents, dis : "Je n'ai pas cette information dans ma base de connaissances."
-    → Cite la source : "Selon [nom du document]..."
-    
-    3. Style de réponse :
-    → Naturel et conversationnel (pas robotique)
-    → Concis (2-4 phrases maximum)
-    → Professionnel mais accessible
-    → En français si question en français
+    ⚠️ RÈGLES CRITIQUES - À RESPECTER ABSOLUMENT :
 
-    QUESTION DE L'ÉTUDIANT :
+    1. SALUTATIONS (bonjour, merci, ok, au revoir) :
+    → Réponds poliment SANS utiliser les documents
+
+    2. QUESTIONS NÉCESSITANT RECHERCHE :
+    → Utilise UNIQUEMENT les informations EXPLICITES dans les documents ci-dessus
+    → Si l'information N'EST PAS EXPLICITEMENT dans les documents, tu DOIS dire :
+        "Je n'ai pas cette information dans ma base de connaissances. Je vous conseille de contacter [service concerné]."
+    
+    3. NE JAMAIS :
+    ❌ Inventer des URLs, emails, numéros de téléphone
+    ❌ Inventer des procédures non mentionnées
+    ❌ Extrapoler ou déduire des informations
+    ❌ Donner des infos générales si la question est spécifique
+    
+    4. STYLE :
+    ✅ Concis (2-3 phrases max)
+    ✅ Citer la source : "Selon [Document X]..."
+    ✅ Si incomplet : "Les documents ne précisent pas... Je vous conseille de..."
+
+    QUESTION :
     {query}
 
-    TA RÉPONSE (directe, naturelle, concise) :"""
+    RÉPONSE (prudente, précise, citée) :
+    
+    CONTACTS UTILES (à mentionner si info manquante) :
+    - Service scolarité de votre faculté
+    - Plateforme de préinscription : https://preinscription.um5.ac.ma
+    - Site officiel UM5 : https://www.um5.ac.ma"""
 
         return prompt
         

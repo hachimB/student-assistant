@@ -28,6 +28,8 @@ COLLECTION_NAME = "student_documents"
 EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 LLM_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
 HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+LLM_PROVIDER=os.getenv("LLM_PROVIDER")
 
 # ============================================
 # SINGLETON : Modèle d'embeddings global
@@ -83,7 +85,7 @@ class RAGService:
         self.collection = self.chroma_client.get_collection(name=COLLECTION_NAME)
         
         # 3. LLM
-        print(f"   🤖 Connexion HuggingFace API...")
+        print(f"   🤖 Connexion API...")
         self.llm_client = InferenceClient(token=HUGGINGFACE_API_KEY)
         
         # 4. Mémoire
@@ -264,72 +266,49 @@ class RAGService:
     
     
     def generate_prompt(
-    self, 
-    query: str, 
-    documents: List[Dict],
-    include_history: bool = True
-) -> str:
-        """
-        Prompt RENFORCÉ contre hallucinations
-        """
+        self, 
+        query: str, 
+        documents: List[Dict],
+        include_history: bool = True
+    ) -> str:
+        """Prompt avec FRANÇAIS OBLIGATOIRE"""
         
-        # Contexte documentaire
+        # Contexte
         context = ""
         for i, doc in enumerate(documents, 1):
             source = doc['metadata']['source']
             text = doc['text']
-            
-            context += f"\n[Document {i} - {source}]\n{text}\n"
+            context += f"\n[Document {i} : {source}]\n{text}\n"
             context += "-" * 60 + "\n"
         
         # Historique
         history_context = ""
         if include_history and self.conversation_history:
-            history_context = "\n\nÉchanges précédents :\n"
-            for i, exchange in enumerate(self.conversation_history[-3:], 1):
-                history_context += f"Q{i}: {exchange['question']}\n"
-                history_context += f"R{i}: {exchange['answer'][:100]}...\n\n"
+            history_context = "\nÉchanges récents :\n"
+            for exchange in self.conversation_history[-2:]:
+                history_context += f"Q: {exchange['question']}\n"
+                history_context += f"R: {exchange['answer'][:80]}...\n"
         
-        # Prompt renforcé
-        prompt = f"""Tu es un assistant de l'UM5. Tu dois être TRÈS PRUDENT et NE JAMAIS inventer d'informations.
+        # Prompt FRANÇAIS FORCÉ
+        prompt = f"""Tu es l'assistant virtuel de l'UM5 (Université Mohammed V de Rabat, Maroc).
 
-    CONTEXTE :
-    Tu as accès à des documents officiels limités.
+    RÈGLE ABSOLUE : Tu DOIS TOUJOURS répondre en FRANÇAIS, peu importe la langue des documents.
     {history_context}
 
-    DOCUMENTS DISPONIBLES :
+    DOCUMENTS DISPONIBLES (en français) :
     {context}
 
-    ⚠️ RÈGLES CRITIQUES - À RESPECTER ABSOLUMENT :
+    INSTRUCTIONS :
+    1. Réponds UNIQUEMENT en FRANÇAIS
+    2. Utilise SEULEMENT les informations dans les documents ci-dessus
+    3. Si l'info n'existe pas : "Je n'ai pas cette information. Contactez le service de scolarité."
+    4. Maximum 2-3 phrases
+    5. Cite la source : "Selon [nom du document]..."
+    6. Jamais d'anglais, toujours du français
 
-    1. SALUTATIONS (bonjour, merci, ok, au revoir) :
-    → Réponds poliment SANS utiliser les documents
+    QUESTION DE L'ÉTUDIANT (en français) : {query}
 
-    2. QUESTIONS NÉCESSITANT RECHERCHE :
-    → Utilise UNIQUEMENT les informations EXPLICITES dans les documents ci-dessus
-    → Si l'information N'EST PAS EXPLICITEMENT dans les documents, tu DOIS dire :
-        "Je n'ai pas cette information dans ma base de connaissances. Je vous conseille de contacter [service concerné]."
-    
-    3. NE JAMAIS :
-    ❌ Inventer des URLs, emails, numéros de téléphone
-    ❌ Inventer des procédures non mentionnées
-    ❌ Extrapoler ou déduire des informations
-    ❌ Donner des infos générales si la question est spécifique
-    
-    4. STYLE :
-    ✅ Concis (2-3 phrases max)
-    ✅ Citer la source : "Selon [Document X]..."
-    ✅ Si incomplet : "Les documents ne précisent pas... Je vous conseille de..."
-
-    QUESTION :
-    {query}
-
-    RÉPONSE (prudente, précise, citée) :
-    
-    CONTACTS UTILES (à mentionner si info manquante) :
-    - Service scolarité de votre faculté
-    - Plateforme de préinscription : https://preinscription.um5.ac.ma
-    - Site officiel UM5 : https://www.um5.ac.ma"""
+    TA RÉPONSE (en français, concise) :"""
 
         return prompt
         
@@ -360,7 +339,7 @@ class RAGService:
             
             response = self.llm_client.chat_completion(
                 messages=messages,
-                model=LLM_MODEL,
+                model=LLM_PROVIDER,
                 max_tokens=max_tokens,
                 temperature=temperature,
             )
@@ -417,7 +396,7 @@ class RAGService:
         
             response = self.llm_client.chat_completion(
                 messages=messages,
-                model=LLM_MODEL,
+                model=LLM_PROVIDER,
                 max_tokens=50,
                 temperature=0.3  # Bas pour être précis
             )
@@ -435,28 +414,76 @@ class RAGService:
     
     def is_greeting(self, question: str) -> bool:
         """
-        Détecte si c'est une salutation OU formule de politesse
-        (ne nécessitant pas de recherche documentaire)
+        Détecte salutations ET questions personnelles
         """
-        
-        # Salutations et formules de politesse
-        simple_phrases = [
-            # Salutations
-            'bonjour', 'salut', 'hello', 'hi', 'hey', 'coucou', 'bonsoir',
-            # Politesse
-            'merci', 'thanks', 'thank you', 'd\'accord', 'ok', 'okay',
-            'au revoir', 'bye', 'à bientôt', 'à plus',
-            # Expressions courtes
-            'oui', 'non', 'bien', 'super', 'cool', 'parfait', 'génial'
-        ]
         
         question_lower = question.lower().strip()
         
-        # Phrase courte (1-3 mots)
-        if len(question_lower.split()) <= 3:
-            return any(phrase in question_lower for phrase in simple_phrases)
+        # Salutations simples
+        simple_phrases = [
+            'bonjour', 'salut', 'hello', 'hi', 'hey', 'coucou', 'bonsoir',
+            'merci', 'thanks', 'ok', 'okay', 'd\'accord',
+            'au revoir', 'bye', 'à bientôt',
+            'oui', 'non', 'bien', 'super', 'cool', 'parfait'
+        ]
+        
+        # Questions personnelles (AMÉLIORER LA DÉTECTION)
+        personal_patterns = [
+            'comment vas', 'comment tu vas', 'ça va', 'tu vas bien',
+            'quel âge', 'quel age', 'ton âge', 'ton age', 'âge as tu', 'age as tu',
+            'qui es-tu', 'qui es tu', 'qui tu es',
+            'comment tu t\'appel', 'ton nom', 'c\'est quoi ton nom',
+            'tu es qui', 'tu fais quoi', 'c\'est quoi'
+        ]
+        
+        # Phrases courtes (1-4 mots) avec mots simples
+        if len(question_lower.split()) <= 4:
+            if any(phrase in question_lower for phrase in simple_phrases):
+                return True
+        
+        # Questions personnelles (toutes longueurs)
+        if any(pattern in question_lower for pattern in personal_patterns):
+            return True
         
         return False
+
+
+    def handle_greeting(self, question: str) -> str:
+        """
+        Réponses adaptées
+        """
+        
+        question_lower = question.lower().strip()
+        
+        # Questions personnelles sur l'assistant
+        if any(word in question_lower for word in ['comment vas', 'ça va', 'tu vas']):
+            return "Je suis un assistant virtuel, je n'ai pas d'état d'âme ! 😊 Mais je suis prêt à vous aider avec vos questions sur l'UM5."
+        
+        if any(word in question_lower for word in ['âge', 'vieux', 'ans']):
+            return "Je suis un programme informatique, je n'ai pas d'âge ! 🤖 Comment puis-je vous aider avec l'UM5 ?"
+        
+        if any(word in question_lower for word in ['qui es-tu', 'qui tu es', 'ton nom', 'tu t\'appelles']):
+            return "Je suis l'assistant virtuel de l'UM5 ! Mon rôle est de vous aider avec vos questions sur les emplois du temps, règlements et procédures. Que puis-je faire pour vous ?"
+        
+        # Merci
+        if any(word in question_lower for word in ['merci', 'thanks']):
+            return "De rien ! 😊 N'hésitez pas pour d'autres questions."
+        
+        # Au revoir
+        if any(word in question_lower for word in ['au revoir', 'bye', 'à bientôt']):
+            return "À bientôt ! 👋 Bonne journée !"
+        
+        # Confirmations
+        if any(word in question_lower for word in ['ok', 'okay', 'd\'accord', 'bien', 'parfait']):
+            responses = [
+                "Super ! Autre question ?",
+                "Parfait ! Comment puis-je vous aider d'autre ?",
+            ]
+            import random
+            return random.choice(responses)
+        
+        # Salutations par défaut
+        return "Bonjour ! 👋 Je suis l'assistant virtuel de l'UM5. Comment puis-je vous aider ?"
 
 
     def handle_greeting(self, question: str) -> str:

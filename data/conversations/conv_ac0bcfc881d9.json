@@ -1,0 +1,223 @@
+{
+  "id": "conv_ac0bcfc881d9",
+  "created_at": "2026-01-06T10:18:44.242171",
+  "updated_at": "2026-01-06T10:31:21.823206",
+  "messages": [
+    {
+      "id": "msg_bd4c53fa",
+      "role": "user",
+      "content": "quand on aura les examen du printemps",
+      "timestamp": "2026-01-06T10:20:55.466178",
+      "sources": []
+    },
+    {
+      "id": "msg_a242d1be",
+      "role": "assistant",
+      "content": "Selon le Calendrier prévisionnel de l’Année Universitaire 2024– 2025  : les examens du printemps débuteront le jeudi 26 juin 2025.",
+      "timestamp": "2026-01-06T10:20:56.637593",
+      "sources": [
+        {
+          "source": "Charte_examen_juillet_2017.pdf",
+          "category": "um5",
+          "score": 0.09001297517890768,
+          "excerpt": null
+        },
+        {
+          "source": "Charte_UM5R Version 19 Juillet 2022.pdf",
+          "category": "reglements",
+          "score": 0.08980570571334436,
+          "excerpt": null
+        },
+        {
+          "source": "Calendrier prévisionnel de l’Année Universitaire 2024– 2025 (Temps Normal)-UM5.pdf",
+          "category": "emploi_temps",
+          "score": 0.08905910293025254,
+          "excerpt": null
+        },
+        {
+          "source": "Charte_examen_juillet_2017.pdf",
+          "category": "um5",
+          "score": 0.08724883144131779,
+          "excerpt": null
+        },
+        {
+          "source": "Charte_examen_juillet_2017.pdf",
+          "category": "um5",
+          "score": 0.08442983515595158,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_f21df8df",
+      "role": "user",
+      "content": "et apres les examens qu'elle est la date prevue pour l'affichage des notes",
+      "timestamp": "2026-01-06T10:23:39.122967",
+      "sources": []
+    },
+    {
+      "id": "msg_f0f54146",
+      "role": "assistant",
+      "content": "Je n'ai pas cette information. Contactez le service de scolarité.",
+      "timestamp": "2026-01-06T10:23:40.635940",
+      "sources": [
+        {
+          "source": "Calendrier prévisionnel de l’Année Universitaire 2024– 2025 (Temps Normal)-UM5.pdf",
+          "category": "emploi_temps",
+          "score": 0.06621365119812764,
+          "excerpt": null
+        },
+        {
+          "source": "Réglement_interieur_2020-2021_ENSIAS.pdf",
+          "category": "reglements",
+          "score": 0.056515083555954825,
+          "excerpt": null
+        },
+        {
+          "source": "Réglement_interieur_2020-2021_ENSIAS.pdf",
+          "category": "reglements",
+          "score": 0.05648673958790779,
+          "excerpt": null
+        },
+        {
+          "source": "Charte_examen_juillet_2017.pdf",
+          "category": "um5",
+          "score": 0.05540559876720514,
+          "excerpt": null
+        },
+        {
+          "source": "Master S1 MSDG TN 24_25.docx",
+          "category": "emploi_temps",
+          "score": 0.0550371769260566,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_902e912c",
+      "role": "user",
+      "content": "donner moi les noms ou les adresses email des responsables des filires informatique",
+      "timestamp": "2026-01-06T10:25:15.985411",
+      "sources": []
+    },
+    {
+      "id": "msg_a83f2314",
+      "role": "assistant",
+      "content": "Je n'ai pas cette information. Contactez le service de scolarité.",
+      "timestamp": "2026-01-06T10:25:17.545181",
+      "sources": [
+        {
+          "source": "Règlement Interieur des Formations continues_UM5_2019.pdf",
+          "category": "reglements",
+          "score": 0.10054560134089441,
+          "excerpt": null
+        },
+        {
+          "source": "Réglement_interieur_2020-2021_ENSIAS.pdf",
+          "category": "reglements",
+          "score": 0.09843854087574191,
+          "excerpt": null
+        },
+        {
+          "source": "Convention_Stage_ESTS.pdf",
+          "category": "um5",
+          "score": 0.0980572053356086,
+          "excerpt": null
+        },
+        {
+          "source": "Convention_Stage_ESTS.pdf",
+          "category": "um5",
+          "score": 0.09538310985345723,
+          "excerpt": null
+        },
+        {
+          "source": "faq.pdf",
+          "category": "faqs",
+          "score": 0.09502771463446706,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_3a1679b8",
+      "role": "user",
+      "content": "donner moi l'emploi du temps de la filiere informatique",
+      "timestamp": "2026-01-06T10:27:32.583567",
+      "sources": []
+    },
+    {
+      "id": "msg_5df624ab",
+      "role": "assistant",
+      "content": "Je n'ai pas cette information. Contactez le service de scolarité.",
+      "timestamp": "2026-01-06T10:27:34.050539",
+      "sources": [
+        {
+          "source": "Master S3 MIIEL TN 2024-2025.docx",
+          "category": "emploi_temps",
+          "score": 0.0550303776106571,
+          "excerpt": null
+        },
+        {
+          "source": "Master S3 MIIEL TA 2024-2025.docx",
+          "category": "emploi_temps",
+          "score": 0.05495134132345311,
+          "excerpt": null
+        },
+        {
+          "source": "Calendrier prévisionnel de l’Année Universitaire 2024– 2025 (Temps Normal)-UM5.pdf",
+          "category": "emploi_temps",
+          "score": 0.05445112004352866,
+          "excerpt": null
+        },
+        {
+          "source": "Master S1-TA MIIEL-2024-2025.docx",
+          "category": "emploi_temps",
+          "score": 0.052085457870265,
+          "excerpt": null
+        },
+        {
+          "source": "MSDG S3 Mang TA 24_25.docx",
+          "category": "emploi_temps",
+          "score": 0.051787597045935455,
+          "excerpt": null
+        }
+      ]
+    },
+    {
+      "id": "msg_6a03a400",
+      "role": "user",
+      "content": "Inscription",
+      "timestamp": "2026-01-06T10:31:20.065711",
+      "sources": []
+    },
+    {
+      "id": "msg_6a8c506c",
+      "role": "assistant",
+      "content": "L'inscription à l'Université Mohammed V de Rabat (UM5) pour l'année 2025-2026 se fait en ligne sur preinscription.um5.ac.ma.  Selon [Document 1], la période de préinscription s'étend du 25 juin au 20 juillet 2025.",
+      "timestamp": "2026-01-06T10:31:21.823193",
+      "sources": [
+        {
+          "source": "Inscription à l’UniUniversité Mohammed V de Rabat (UM5) 2025-2026 sur preinscription.um5.ac.ma.pdf",
+          "category": "procedures",
+          "score": 0.06080865885016464,
+          "excerpt": null
+        },
+        {
+          "source": "Inscription à l’UniUniversité Mohammed V de Rabat (UM5) 2025-2026 sur preinscription.um5.ac.ma.pdf",
+          "category": "procedures",
+          "score": 0.047879491784502105,
+          "excerpt": null
+        },
+        {
+          "source": "Inscription à l’UniUniversité Mohammed V de Rabat (UM5) 2025-2026 sur preinscription.um5.ac.ma.pdf",
+          "category": "procedures",
+          "score": 0.04488884725918333,
+          "excerpt": null
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "message_count": 10
+  }
+}
